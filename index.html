@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pemenang Kompetisi Instagram</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- AdSense Script -->
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1681916260628500"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border-left-color: #09f;
+        animation: spin 1s ease infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-50 flex flex-col items-center justify-center min-h-screen py-12"
+  >
+    <!-- Main Content -->
+    <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md mx-4">
+      <div class="text-center mb-8">
+        <h1 class="text-2xl font-bold text-slate-800">
+          Pilih Pemenang Kompetisi
+        </h1>
+        <p class="text-slate-500 mt-1">
+          Masukkan link dan atur kriteria untuk menentukan pemenang.
+        </p>
+      </div>
+
+      <!-- Input Form -->
+      <div class="space-y-6">
+        <div>
+          <label
+            for="postUrl"
+            class="block text-sm font-medium text-slate-700 mb-1"
+            >🔗 URL Postingan Instagram</label
+          >
+          <input
+            type="text"
+            id="postUrl"
+            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            placeholder="https://www.instagram.com/p/..."
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2"
+            >📜 Atur Kriteria Pemenang</label
+          >
+          <div class="space-y-3">
+            <div class="flex items-center p-3 bg-slate-50 rounded-lg">
+              <input
+                type="checkbox"
+                id="uniqueComment"
+                class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                checked
+              />
+              <label
+                for="uniqueComment"
+                class="ml-3 block text-sm text-slate-800"
+                >Hanya hitung satu komentar per akun</label
+              >
+            </div>
+            <div class="flex items-center p-3 bg-slate-50 rounded-lg">
+              <input
+                type="checkbox"
+                id="mentionFriendsCheck"
+                class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+              />
+              <div class="ml-3 flex items-center gap-2 text-sm text-slate-800">
+                <label for="mentionCount">Wajib mention</label>
+                <input
+                  type="number"
+                  id="mentionCount"
+                  class="w-16 px-2 py-1 border border-slate-300 rounded-md text-sm"
+                  value="3"
+                  min="1"
+                />
+                <label for="mentionCount">teman</label>
+              </div>
+            </div>
+            <div class="flex items-center p-3 bg-slate-50 rounded-lg">
+              <input
+                type="checkbox"
+                id="specificHashtagCheck"
+                class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+              />
+              <div class="ml-3 flex-grow text-sm text-slate-800">
+                <label for="hashtagValue" class="block mb-1"
+                  >Wajib pakai hashtag</label
+                >
+                <input
+                  type="text"
+                  id="hashtagValue"
+                  class="w-full px-3 py-1 border border-slate-300 rounded-md text-sm"
+                  placeholder="#GiveawayAnda"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="mt-8">
+        <button
+          id="findWinnerBtn"
+          class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 ease-in-out flex items-center justify-center gap-2"
+        >
+          <span id="btn-text">🚀 Tentukan Pemenang</span>
+        </button>
+      </div>
+
+      <!-- Result Display -->
+      <div
+        id="result-display"
+        class="mt-8 text-center p-6 border-2 border-dashed border-slate-200 rounded-lg min-h-[100px] flex items-center justify-center"
+      >
+        <p id="result-text" class="text-slate-500">
+          Hasil akan ditampilkan di sini
+        </p>
+      </div>
+    </div>
+
+    <!-- Ad Unit -->
+    <div class="w-full max-w-md mx-4 mt-6">
+      <ins
+        class="adsbygoogle"
+        style="display: block"
+        data-ad-format="fluid"
+        data-ad-layout-key="-hy-l+1-4r+fm"
+        data-ad-client="ca-pub-1681916260628500"
+        data-ad-slot="5546332268"
+      ></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <!-- Popup/Modal for Loading State -->
+    <div
+      id="loading-modal"
+      class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden transition-opacity duration-300"
+    >
+      <div
+        class="bg-white p-8 rounded-xl shadow-2xl text-center w-full max-w-sm mx-4"
+      >
+        <h3 class="text-lg font-semibold text-slate-800 mb-4">
+          Mencari Pemenang...
+        </h3>
+        <div class="spinner mx-auto"></div>
+        <p id="progress-text" class="mt-4 text-slate-600">Memulai proses...</p>
+      </div>
+    </div>
+
+    <script>
+      // --- Bagian Logika Frontend ---
+      const findWinnerBtn = document.getElementById("findWinnerBtn");
+      const resultDisplay = document.getElementById("result-display");
+      const loadingModal = document.getElementById("loading-modal");
+      const progressText = document.getElementById("progress-text");
+
+      // Jadikan fungsi event listener menjadi async untuk menggunakan await
+      findWinnerBtn.addEventListener("click", async () => {
+        // Mengambil semua data dari form
+        const postUrl = document.getElementById("postUrl").value;
+        const criteria = {
+          uniqueComment: document.getElementById("uniqueComment").checked,
+          mentionFriends: document.getElementById("mentionFriendsCheck")
+            .checked,
+          mentionCount: document.getElementById("mentionCount").value,
+          specificHashtag: document.getElementById("specificHashtagCheck")
+            .checked,
+          hashtagValue: document.getElementById("hashtagValue").value,
+        };
+
+        if (!postUrl) {
+          alert("URL Postingan tidak boleh kosong!");
+          return;
+        }
+
+        loadingModal.classList.remove("hidden");
+        findWinnerBtn.disabled = true;
+        progressText.innerText = "Menghubungi server...";
+
+        try {
+          // KIRIM PERMINTAAN KE BACKEND
+          const response = await fetch("http://localhost:3000/get-winner", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ postUrl, criteria }), // Mengirim URL dan kriteria
+          });
+
+          const result = await response.json(); // Membaca jawaban dari server
+
+          // Tampilkan hasil dari server
+          if (result.success && result.winner) {
+            resultDisplay.className =
+              "mt-8 text-center p-6 border-2 border-green-400 bg-green-50 rounded-lg min-h-[100px] flex flex-col items-center justify-center transition-all duration-300";
+            resultDisplay.innerHTML = `
+                        <p class="text-green-800">🎉 Selamat kepada Pemenang! 🎉</p>
+                        <h2 class="text-2xl font-bold text-slate-800 mt-2">@${result.winner.username}</h2>
+                        <p class="text-sm text-slate-500 mt-1">Dipilih oleh server.</p>
+                    `;
+          } else {
+            throw new Error(result.message || "Gagal mendapatkan pemenang.");
+          }
+        } catch (error) {
+          // Jika terjadi error (misal: server mati)
+          console.error("Error:", error);
+          resultDisplay.className =
+            "mt-8 text-center p-6 border-2 border-red-400 bg-red-50 rounded-lg min-h-[100px] flex flex-col items-center justify-center";
+          resultDisplay.innerHTML = `
+                    <h3 class="font-semibold text-red-800">Oops! Terjadi Kesalahan</h3>
+                    <p class="text-red-600 text-sm mt-1">Tidak dapat terhubung ke server. Pastikan server sudah berjalan.</p>
+                `;
+        } finally {
+          // Apapun hasilnya, sembunyikan popup dan aktifkan tombol kembali
+          loadingModal.classList.add("hidden");
+          findWinnerBtn.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
